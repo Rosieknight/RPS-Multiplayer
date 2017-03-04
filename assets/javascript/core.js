@@ -10,6 +10,12 @@ var config = {
 
 firebase.initializeApp(config);
 
+//The database variable
+var database = firebase.database();
+
+//The connection variables
+var wehaveConnections = database.ref("/connections");
+var isConnected = database.ref(".info/connected");
 
 //Your choices in the game.
 var options ["rock", "paper", "scissors"];
@@ -28,6 +34,14 @@ var tie = 0; //Tie is a shared variable between the two players.
 //What each player picks
 var player1Pick;
 var player2Pick;
+
+isConnected.on("value", function(snap){
+	if(snap.val()){
+		var con = wehaveConnections.push(true);
+		//Figure out some way to limit this to two people. If(i<3)?
+		con.onDisconnect().remove();
+	}
+});
 
 //Sign in info goes here.
 
